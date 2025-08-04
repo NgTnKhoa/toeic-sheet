@@ -622,7 +622,9 @@ export default function TOEICAnswerSheet() {
                     <span>Green bubbles show correct answers</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
-                    <span>Use "Exit Answer Key" to return to student mode</span>
+                    <span>
+                      Use &quot;Exit Answer Key&quot; to return to student mode
+                    </span>
                   </div>
                 </>
               ) : (
@@ -644,7 +646,9 @@ export default function TOEICAnswerSheet() {
                     <span>Red = Wrong</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
-                    <span>Use "Answer Key Mode" to set correct answers</span>
+                    <span>
+                      Use &quot;Answer Key Mode&quot; to set correct answers
+                    </span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-green-600 dark:text-green-400">
