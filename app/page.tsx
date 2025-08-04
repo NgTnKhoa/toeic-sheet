@@ -233,7 +233,7 @@ export default function TOEICAnswerSheet() {
     return (
       <button
         onClick={() => handleAnswerSelect(questionNumber, option)}
-        className={`w-7 h-7 rounded-full border-2 flex items-center justify-center text-sm font-bold transition-all duration-150 hover:scale-110 ${bubbleClass}`}
+        className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-150 hover:scale-110 active:scale-95 ${bubbleClass}`}
         aria-label={`Question ${questionNumber}, option ${option}`}
         disabled={!correctionMode && hasCorrectAnswer}
       >
@@ -261,14 +261,14 @@ export default function TOEICAnswerSheet() {
     }
 
     return (
-      <div className="flex items-center gap-3 py-1">
-        <div className="w-10 text-right flex items-center justify-end gap-1">
-          <span className="text-sm font-mono font-semibold text-gray-700 dark:text-gray-300">
+      <div className="flex items-center justify-center gap-2 sm:gap-3 py-1">
+        <div className="w-8 sm:w-10 text-right flex items-center justify-end gap-1">
+          <span className="text-xs sm:text-sm font-mono font-semibold text-gray-700 dark:text-gray-300">
             {questionNumber}
           </span>
           {statusIcon}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2 sm:gap-3 lg:gap-4">
           <AnswerBubble questionNumber={questionNumber} option="A" />
           <AnswerBubble questionNumber={questionNumber} option="B" />
           <AnswerBubble questionNumber={questionNumber} option="C" />
@@ -316,36 +316,38 @@ export default function TOEICAnswerSheet() {
     }
 
     // Organize questions in columns (similar to real answer sheets)
-    const questionsPerColumn = 25;
+    // Use different column counts based on screen size
+    const questionsPerColumn = 25; // Default for desktop
     const columns = [];
     for (let i = 0; i < allQuestions.length; i += questionsPerColumn) {
       columns.push(allQuestions.slice(i, i + questionsPerColumn));
     }
 
     return (
-      <div className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg p-6 shadow-sm">
+      <div className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg px-3 sm:px-4 lg:px-6 py-3 sm:py-4 shadow-sm">
         {/* Section Header */}
-        <div className="mb-6 pb-4 border-b-2 border-gray-200 dark:border-gray-600">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-1">
+        <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b-2 border-gray-200 dark:border-gray-600">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+            <div className="text-center sm:text-left">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mb-1">
                 {title}
               </h2>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 {questions.map((part) => (
-                  <div key={part.part} className="flex items-center gap-2">
+                  <div key={part.part} className="flex items-center gap-1 sm:gap-2">
                     <span className="font-semibold">Part {part.part}:</span>
-                    <span>{part.name}</span>
-                    <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    <span className="hidden sm:inline">{part.name}</span>
+                    <span className="sm:hidden">{part.name.split(' ')[0]}</span>
+                    <span className="text-xs bg-gray-100 dark:bg-gray-700 px-1 sm:px-2 py-1 rounded">
                       Q{part.start}-{part.end}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="text-right">
+            <div className="text-center sm:text-right">
               <div
-                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold mb-2 ${
+                className={`inline-block px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold mb-2 ${
                   sectionType === "listening"
                     ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                     : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
@@ -353,13 +355,13 @@ export default function TOEICAnswerSheet() {
               >
                 {correctionMode ? "ANSWER KEY" : sectionType.toUpperCase()}
               </div>
-              <div className="text-lg font-bold text-gray-800 dark:text-gray-200">
+              <div className="text-base sm:text-lg font-bold text-gray-800 dark:text-gray-200">
                 {sectionScore !== null
                   ? `${sectionScore}/${totalQuestions}`
                   : `${answeredCount}/${totalQuestions}`}
               </div>
               {sectionScore !== null && (
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   {((sectionScore / totalQuestions) * 100).toFixed(1)}% correct
                 </div>
               )}
@@ -373,7 +375,7 @@ export default function TOEICAnswerSheet() {
                 variant="outline"
                 size="sm"
                 disabled={answeredCount === 0}
-                className="mt-1"
+                className="mt-1 text-xs sm:text-sm"
               >
                 Clear Section
               </Button>
@@ -381,13 +383,10 @@ export default function TOEICAnswerSheet() {
           </div>
         </div>
 
-        {/* Question Grid */}
-        <div
-          className="grid gap-8"
-          style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
-        >
+        {/* Question Grid - Responsive columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
           {columns.map((columnQuestions, colIndex) => (
-            <div key={colIndex} className="space-y-2">
+            <div key={colIndex} className="w-full max-w-xs">
               {columnQuestions.map((questionNumber) => (
                 <QuestionRow
                   key={questionNumber}
@@ -431,30 +430,30 @@ export default function TOEICAnswerSheet() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="text-center lg:text-left">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
                 TOEIC Answer Sheet
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                 {correctionMode
                   ? "Answer Key Mode - Set correct answers"
                   : "Test of English for International Communication - 200 Questions"}
               </p>
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 lg:gap-8">
               {/* Score Summary */}
-              <div className="flex gap-6">
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6">
                 {!correctionMode && Object.keys(correctAnswers).length > 0 ? (
                   // Show score when in student mode with correct answers available
                   <>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Score
                       </div>
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">
                         {scoreData.correctCount}/200
                       </div>
                       <div className="text-xs text-gray-500">
@@ -462,26 +461,26 @@ export default function TOEICAnswerSheet() {
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Correct
                       </div>
-                      <div className="text-xl font-bold text-green-600">
+                      <div className="text-base sm:text-lg lg:text-xl font-bold text-green-600">
                         {scoreData.correctCount}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Wrong
                       </div>
-                      <div className="text-xl font-bold text-red-600">
+                      <div className="text-base sm:text-lg lg:text-xl font-bold text-red-600">
                         {scoreData.incorrectCount}
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Blank
                       </div>
-                      <div className="text-xl font-bold text-gray-600">
+                      <div className="text-base sm:text-lg lg:text-xl font-bold text-gray-600">
                         {scoreData.unansweredCount}
                       </div>
                     </div>
@@ -490,26 +489,26 @@ export default function TOEICAnswerSheet() {
                   // Show progress when in normal mode or correction mode
                   <>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Listening
                       </div>
-                      <div className="text-2xl font-bold text-blue-600">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600">
                         {listeningAnswered}/100
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Reading
                       </div>
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">
                         {readingAnswered}/100
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         Total
                       </div>
-                      <div className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+                      <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 dark:text-gray-200">
                         {totalAnswered}/200
                       </div>
                     </div>
@@ -518,13 +517,14 @@ export default function TOEICAnswerSheet() {
               </div>
 
               {/* Controls */}
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 lg:gap-4">
                 <Button
                   onClick={() => setCorrectionMode(!correctionMode)}
                   variant={correctionMode ? "default" : "outline"}
                   className={
                     correctionMode ? "bg-green-600 hover:bg-green-700" : ""
                   }
+                  size="sm"
                 >
                   {correctionMode ? "Exit Answer Key" : "Answer Key Mode"}
                 </Button>
@@ -532,6 +532,7 @@ export default function TOEICAnswerSheet() {
                   onClick={clearAllAnswers}
                   variant="outline"
                   disabled={totalAnswered === 0}
+                  size="sm"
                 >
                   {correctionMode ? "Clear Answer Key" : "Clear All Answers"}
                 </Button>
@@ -539,6 +540,7 @@ export default function TOEICAnswerSheet() {
                   onClick={clearAllData}
                   variant="outline"
                   className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+                  size="sm"
                 >
                   Reset All
                 </Button>
@@ -548,8 +550,8 @@ export default function TOEICAnswerSheet() {
           </div>
 
           {/* Progress Bar */}
-          <div className="mt-6">
-            <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+          <div className="mt-4 sm:mt-6">
+            <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-3 sm:h-4 overflow-hidden">
               <div
                 className={`h-full transition-all duration-500 ease-out ${
                   correctionMode
@@ -561,7 +563,7 @@ export default function TOEICAnswerSheet() {
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
-            <div className="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-center mt-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {correctionMode
                 ? `Answer Key: ${progressPercentage.toFixed(1)}% Complete`
                 : Object.keys(correctAnswers).length > 0
@@ -582,8 +584,8 @@ export default function TOEICAnswerSheet() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="space-y-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4">
+        <div className="space-y-6 sm:space-y-8">
           {/* Listening Section */}
           <QuestionSection
             title="LISTENING COMPREHENSION"
@@ -601,19 +603,19 @@ export default function TOEICAnswerSheet() {
       </main>
 
       {/* Footer Instructions */}
-      <footer className="bg-white dark:bg-gray-800 border-t-2 border-gray-200 dark:border-gray-700 mt-12">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+      <footer className="bg-white dark:bg-gray-800 border-t-2 border-gray-200 dark:border-gray-700 mt-8 sm:mt-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">
               {correctionMode
                 ? "Answer Key Mode Instructions"
                 : "How to Use This Answer Sheet"}
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {correctionMode ? (
                 <>
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">
                       A
                     </div>
                     <span>Click to set correct answers</span>
@@ -621,7 +623,7 @@ export default function TOEICAnswerSheet() {
                   <div className="flex items-center justify-center gap-2">
                     <span>Green bubbles show correct answers</span>
                   </div>
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center gap-2 sm:col-span-2 lg:col-span-1">
                     <span>
                       Use &quot;Exit Answer Key&quot; to return to student mode
                     </span>
@@ -630,17 +632,17 @@ export default function TOEICAnswerSheet() {
               ) : (
                 <>
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center text-xs font-bold">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-gray-400 flex items-center justify-center text-xs font-bold">
                       A
                     </div>
                     <span>Click bubbles to select answers</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">
                       ✓
                     </div>
-                    <span>Green = Correct</span>
-                    <div className="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center text-xs font-bold">
+                    <span className="mr-2">Green = Correct</span>
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-600 text-white flex items-center justify-center text-xs font-bold">
                       ✗
                     </div>
                     <span>Red = Wrong</span>
