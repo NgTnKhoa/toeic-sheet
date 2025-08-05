@@ -429,7 +429,7 @@ export default function TOEICAnswerSheet() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
       {/* Beautiful floating love message */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* <div className="fixed top-4 right-4 z-50">
         <div className="bg-pink-500 text-white px-3 py-1 rounded-full shadow-lg">
           <div className="flex items-center gap-2">
         <span>💖</span>
@@ -437,7 +437,7 @@ export default function TOEICAnswerSheet() {
         <span>💖</span>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-lg border-b-2 border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
@@ -672,7 +672,7 @@ export default function TOEICAnswerSheet() {
             </div>
             
             {/* Sweet love message in footer */}
-            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
+            {/* <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
               <div className="flex items-center justify-center gap-2 text-sm">
                 <span className="text-gray-500 dark:text-gray-400">Made with</span>
                 <span className="text-red-500 animate-pulse">❤️</span>
@@ -682,7 +682,7 @@ export default function TOEICAnswerSheet() {
                 </span>
                 <span className="text-pink-400">💕</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </footer>
